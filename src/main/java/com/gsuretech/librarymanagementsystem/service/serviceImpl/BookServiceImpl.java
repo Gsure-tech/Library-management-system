@@ -38,11 +38,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDto updateBook(Long bookId, BookDto bookDto) {
+    public BookDto updateBook(Long bookId, BookDto bookDto) throws BookNotFoundException {
         Optional<Book> optionalBook = bookRepository.findById(bookId);
         if (optionalBook.isEmpty()) {
             log.debug("The Book with ID: {} was not found", bookId);
-            throw new BookNotFoundException(String.format("The Book with ID: %s was not found!", id));
+            throw new BookNotFoundException(String.format("The Book with ID: %s was not found!", bookId));
         }
         Book bookToUpdate = optionalBook.get();
         bookToUpdate.setTitle(bookDto.getTitle());
@@ -54,11 +54,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void deleteBook(Long bookId) {
+    public void deleteBook(Long bookId) throws BookNotFoundException {
         Optional<Book> optionalBook = bookRepository.findById(bookId);
         if (optionalBook.isEmpty()) {
             log.debug("The Book with ID: {} was not found", bookId);
-            throw new BookNotFoundException(String.format("The Book with ID: %s was not found!", id));
+            throw new BookNotFoundException(String.format("The Book with ID: %s was not found!", bookId));
         }
         bookRepository.delete(optionalBook.get());
     }
