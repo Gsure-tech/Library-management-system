@@ -1,7 +1,7 @@
 package com.gsuretech.librarymanagementsystem.controller;
 
 import com.gsuretech.librarymanagementsystem.dto.BookDto;
-import com.gsuretech.librarymanagementsystem.service.LibraryService;
+import com.gsuretech.librarymanagementsystem.service.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,21 +12,21 @@ import java.util.List;
 @RequestMapping("api/books")
 public class BookController {
 
-    private final LibraryService libraryService;
+    private final BookService bookService;
 
-    public BookController(LibraryService libraryService) {
-        this.libraryService = libraryService;
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
     }
 
     @PostMapping
     public ResponseEntity<BookDto> addBook(@RequestBody BookDto book) {
-        BookDto newBook = libraryService.addBook(book);
+        BookDto newBook = bookService.addBook(book);
         return ResponseEntity.status(HttpStatus.CREATED).body(newBook);
     }
 
     @GetMapping
     public List<BookDto> getAllBooks() {
-        return libraryService.getAllBooks();
+        return bookService.getAllBooks();
     }
 
 }
