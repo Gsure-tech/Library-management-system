@@ -28,11 +28,7 @@ public class BorrowingController {
 
     @PutMapping("/{bookId}/patron/{patronId}")
     public ResponseEntity<Void> returnBook(@PathVariable Long bookId, @PathVariable Long patronId) {
-        try {
-            borrowingService.returnBook(bookId, patronId);
-            return ResponseEntity.ok().build();
-        } catch (BorrowingException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        borrowingService.returnBook(bookId, patronId);
+        return ResponseEntity.ok().build();
     }
 }
