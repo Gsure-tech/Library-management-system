@@ -4,6 +4,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
@@ -13,9 +14,11 @@ public class BorrowingRecord {
     private Long id;
 
     @ManyToOne
+    @NotNull(message = "Book cannot be null")
     private Book book;
 
     @ManyToOne
+    @NotNull(message = "Patron cannot be null")
     private Patron patron;
 
     private LocalDate borrowDate;

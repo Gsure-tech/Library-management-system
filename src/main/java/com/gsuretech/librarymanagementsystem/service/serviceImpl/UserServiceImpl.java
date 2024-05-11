@@ -17,8 +17,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -31,17 +30,18 @@ public class UserServiceImpl implements UserService {
     JwtTokenProvider jwtTokenProvider;
     @Autowired
     private ModelMapper modelMapper;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Override
+    @Transactional
     public UserResponse createAccount(UserRequest userRequest) {
         if (userRepository.existsByEmail(userRequest.getEmail())) {
-           UserResponse userResponse = new UserResponse();
-           userResponse.setUserInfo(null);
-           userResponse.setResponseCode(LibraryUtils.ACCOUNT_EXISTS_CODE);
-           userResponse.setResponseCode(LibraryUtils.ACCOUNT_EXISTS_CODE);
-       return userResponse;
+            UserResponse userResponse = new UserResponse();
+            userResponse.setUserInfo(null);
+            userResponse.setResponseMessage(LibraryUtils.ACCOUNT_EXISTS_MESSAGE);
+            userResponse.setResponseCode(LibraryUtils.ACCOUNT_EXISTS_CODE);
+            return userResponse;
         }
         User newUser = new User();
         newUser.setFirstName(userRequest.getFirstName());
@@ -66,8 +66,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse login(LoginDto loginDto) {
-        Authentication authentication = null;
-        authentication = authenticationManager.authenticate(
+        Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword())
         );
 

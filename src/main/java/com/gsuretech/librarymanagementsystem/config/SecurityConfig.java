@@ -1,6 +1,7 @@
 package com.gsuretech.librarymanagementsystem.config;
 
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -21,7 +22,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@AllArgsConstructor
 public class SecurityConfig {
 
     private final UserDetailsService userDetailsService;
@@ -41,6 +41,10 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
 
+    }
+    @Bean
+    public ModelMapper modelMapper(){
+        return new ModelMapper();
     }
     @Bean
     public AuthenticationProvider authenticationProvider(){

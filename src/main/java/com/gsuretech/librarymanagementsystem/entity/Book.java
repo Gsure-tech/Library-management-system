@@ -4,15 +4,20 @@ package com.gsuretech.librarymanagementsystem.entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @NotBlank(message = "Title is required")
+    @Size(max = 255, message = "Title must not exceed 255 characters")
     private String title;
+
+    @NotBlank(message = "Author is required")
+    @Size(max = 255, message = "Author must not exceed 255 characters")
     private String author;
     private int publicationYear;
     private String isbn;

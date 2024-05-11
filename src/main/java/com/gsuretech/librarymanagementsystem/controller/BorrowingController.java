@@ -27,7 +27,7 @@ public class BorrowingController {
     }
 
     @PutMapping("/{bookId}/patron/{patronId}")
-    public ResponseEntity<Void> returnBook(@PathVariable Long bookId, @PathVariable Long patronId) {
+    public ResponseEntity<Void> returnBook(@PathVariable Long bookId, @PathVariable Long patronId) throws BorrowingException {
         borrowingService.returnBook(bookId, patronId);
         return ResponseEntity.ok().build();
     }
