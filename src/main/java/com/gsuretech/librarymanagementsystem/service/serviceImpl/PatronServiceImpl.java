@@ -8,6 +8,7 @@ import com.gsuretech.librarymanagementsystem.service.PatronService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +23,7 @@ public class PatronServiceImpl implements PatronService {
     private ModelMapper modelMapper;
 
     @Override
+    @Transactional(readOnly = true)
     public List<PatronDto> getAllPatrons() {
         List<Patron> patronList = patronRepository.findAll();
         return patronList.stream()
@@ -30,6 +32,7 @@ public class PatronServiceImpl implements PatronService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PatronDto getPatronById(Long id) throws PatronException {
         Optional<Patron> optionalPatron = patronRepository.findById(id);
         if (!optionalPatron.isPresent()) {
@@ -39,13 +42,15 @@ public class PatronServiceImpl implements PatronService {
     }
 
     @Override
+    @Transactional
     public PatronDto addPatron(PatronDto patronDto) {
         Patron patron = modelMapper.map(patronDto, Patron.class);
         patronRepository.save(patron);
-        return patronDto;
+        return modelMapper.map(patron, PatronDto.class); // Return the saved entity mapped back to DTO
     }
 
     @Override
+    @Transactional
     public PatronDto updatePatron(Long id, PatronDto patronDto) throws PatronException {
         Optional<Patron> optionalPatron = patronRepository.findById(id);
         if (!optionalPatron.isPresent()) {
@@ -56,10 +61,11 @@ public class PatronServiceImpl implements PatronService {
         patronToUpdate.setContactInformation(patronDto.getContactInformation());
         // Update other fields as needed
         patronRepository.save(patronToUpdate);
-        return patronDto;
+        return modelMapper.map(patronToUpdate, PatronDto.class);
     }
 
     @Override
+    @Transactional
     public void deletePatron(Long id) throws PatronException {
         Optional<Patron> optionalPatron = patronRepository.findById(id);
         if (!optionalPatron.isPresent()) {

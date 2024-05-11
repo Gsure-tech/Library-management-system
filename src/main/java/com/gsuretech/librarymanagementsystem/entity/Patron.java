@@ -4,13 +4,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Builder
 public class Patron {
@@ -19,9 +17,13 @@ public class Patron {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Name is required")
+    @Size(min = 2, max = 100, message = "Name must be between 2 and 100 characters")
     private String name;
-    private String contactInformation;
 
+    @NotBlank(message = "Contact information is required")
+    @Size(max = 255, message = "Contact information must not exceed 255 characters")
+    private String contactInformation;
     public Patron() {
     }
 

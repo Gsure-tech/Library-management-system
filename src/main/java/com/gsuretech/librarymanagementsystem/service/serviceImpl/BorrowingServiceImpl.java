@@ -10,6 +10,7 @@ import com.gsuretech.librarymanagementsystem.repository.PatronRepository;
 import com.gsuretech.librarymanagementsystem.service.BorrowingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -28,6 +29,7 @@ public class BorrowingServiceImpl implements BorrowingService {
     private BorrowingRecordRepository borrowingRecordRepository;
 
     @Override
+    @Transactional
     public void borrowBook(Long bookId, Long patronId) throws BorrowingException {
         Optional<Book> optionalBook = bookRepository.findById(bookId);
         Optional<Patron> optionalPatron = patronRepository.findById(patronId);
@@ -42,6 +44,7 @@ public class BorrowingServiceImpl implements BorrowingService {
     }
 
     @Override
+    @Transactional
     public void returnBook(Long bookId, Long patronId) throws BorrowingException {
         Optional<Book> optionalBook = bookRepository.findById(bookId);
         Optional<Patron> optionalPatron = patronRepository.findById(patronId);
